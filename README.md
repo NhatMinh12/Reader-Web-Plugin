@@ -11,3 +11,21 @@ It allows users to "ask" questions about the current webpage's content, obtainin
 2. Highlight and Ask: Users can highlight specific text on a webpage and ask questions about it specifically, allowing for detailed inquiries about complex topics.
 3. Page Summary: Generate a succinct summary of a webpage, ideal for long articles or dense technical documentation.
 4. Fact-checking: Users can ask the plugin to verify information on the webpage using its built-in ability to compare against known data.
+
+## Installation
+To run this project locally, please complete the following steps:
+1. Download Node.js: https://nodejs.org/en/download
+2. Clone the repository and install dependencies
+```
+git clone https://github.com/NhatMinh12/Reader-Web-Plugin.git
+cd Reader-Web-Plugin
+npm install
+```
+3. Start the development server
+```
+npm start
+```
+After that, the project should automatically appear in your computer's default browser. If not, you can always navigate here to check out the local copy
+```
+http://localhost:3000/
+```

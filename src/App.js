@@ -9,16 +9,16 @@ import {Configuration, OpenAIApi} from 'openai'
 
 function App() {
   const [prompt, setPrompt] = useState("")
+  const [key, setKey] = useState("")
   const [response, setResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const configuration = new Configuration({
-    apiKey: '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',
+    apiKey: key,
   })
   const openai = new OpenAIApi(configuration)
 
   async function handleSubmit() {
     setIsLoading(true)
-    // try {
     const completion = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: prompt,
@@ -26,10 +26,6 @@ function App() {
     })
     setResponse(completion.data.choices[0].text)
     setIsLoading(false)
-  //   } catch(e) {
-  //     alert("Error: ", e)
-  //     setIsLoading(false)
-  //   }
   } 
 
   return (
@@ -37,6 +33,17 @@ function App() {
       <Box sx={{width: '100%', mt: 4}}>
         <Grid container>
           <Grid item xs={12}>
+            <TextField
+              fullWidth
+              autoFocus
+              label="Enter your OpenAI API key"
+              variant="outlined"
+              margin='normal'
+              value={key}
+              onChange={(e) => {
+                setKey(e.target.value)
+              }}
+            />
             <TextField
               fullWidth
               autoFocus

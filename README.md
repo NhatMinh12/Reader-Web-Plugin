@@ -36,7 +36,7 @@ After verifying that the project is installed correctly, you can then proceed to
 ```
 npm run build
 ```
-This command will create a new folder, "build", in the "root" folder of your project directory. This is the folder we will upload to the browser.<br>  
+This command will create a new folder, "build", in your project directory. This is the folder we will upload to the browser.<br>  
 
 2. Go to the extensions page of your browser. Here I'm using Microsoft Edge.
 

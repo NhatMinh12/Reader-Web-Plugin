@@ -1,9 +1,8 @@
 /*global chrome*/
 
-// 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
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import './App.css';
-import {Box, Button, Paper, Container, Grid, TextField} from "@mui/material"
+import {Box, Button, Paper, Container, Grid, TextField, useScrollTrigger} from "@mui/material"
 import AutorenewIcon from "@mui/icons-material/Autorenew"
 import {Configuration, OpenAIApi} from 'openai'
 
@@ -17,15 +16,54 @@ function App() {
   })
   const openai = new OpenAIApi(configuration)
 
+  async function sendDataToGPT(data) {
+    const apiKey = process.env.OPENAI_API_KEY_2
+    const newConfiguration = new Configuration({
+      apiKey: apiKey,
+    })
+
+    const newOpenAI = new OpenAIApi(newConfiguration)
+
+    const newCompletion = await newOpenAI.createCompletion({
+      model: 'text-davinci-003',
+      // prompt: `${data.pageTitle}. ${data.metaDescription}. ${data.bodyContent.substring(0,10000)}`,
+      prompt: 'Given the following webpage content:"' + `${data.pageTitle}` + ' ' + `${data.metaDescription}` + '" answer the following questions',
+      max_tokens: 400
+    })
+
+    console.log(newCompletion.data.choices[0].text)
+  }
+
+  useEffect(() => {
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+      if (tabs[0]) {
+        console.log(tabs[0].url)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    chrome.runtime.sendMessage({action: 'extractPageInfo'})
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.data) {
+        console.log(message.data.result)
+        console.log('Given the following webpage content:"' + `${message.data.result.pageTitle}` + ' ' + `${message.data.result.metaDescription}` + '" answer the following questions')
+        sendDataToGPT(message.data.result)
+      }
+    })
+  }, [])
+
   async function handleSubmit() {
     setIsLoading(true)
     const completion = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: prompt,
-      max_tokens: 20
+      max_tokens: 400
     })
+    console.log(prompt)
     setResponse(completion.data.choices[0].text)
     setIsLoading(false)
+    setPrompt("")
   } 
 
   return (
@@ -86,7 +124,7 @@ function App() {
           </Grid>
         </Grid>
         <Grid item xs={12} sx={{mt: 3}}>
-          <Paper sx={{p: 3}}>{response}</Paper>
+          <div>{response}</div>
         </Grid>
       </Box>
     </Container>

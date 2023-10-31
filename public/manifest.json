@@ -16,9 +16,13 @@
   "permissions": [
       "scripting",
       "activeTab",
-      "storage"
+      "storage",
+      "tabs"
   ],
   "host_permissions": [
       "https://*/"
-  ]
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
 }
